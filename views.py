@@ -51,10 +51,11 @@ def getMessagesCount(username):
     """getMessagesCount prova a interrogare il database
     per ottenere il numero di messaggi ricevuti"""
     try:
+	session['messagesCount'] = cursor["messagesCount"]
         cursor = managedb.getUserDB1(username)
     except Exception as e:
         print("errore " + str(e))
-    session['messagesCount'] = cursor["messagesCount"]
+    
 
 
 def getBitCoin(username):
@@ -63,9 +64,10 @@ def getBitCoin(username):
     ottenuta per ogni libro inserito"""
     try:
         cursor = managedb.getUserDB1(username)
+	session['bkcoin'] = cursor["bkcoin"]
     except Exception as e:
         print("errore " + str(e))
-    session['bkcoin'] = cursor["bkcoin"]
+    
 
 
 @app.route("/")
