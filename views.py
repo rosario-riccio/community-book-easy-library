@@ -201,14 +201,16 @@ def registrazione():
                 #creeremo il percorso finale del file immagine
                 newPathBookAbs = join(app.config["UPLOAD_FOLDER"],"users",newPathBook)
                 #converteremo il file in jpeg e lo salveremo
-                img.convert('RGB').save(newPathBookAbs,"JPEG")
+                #img.convert('RGB').save(newPathBookAbs,"JPEG")
+		img.save(newPathBookAbs)
                 print(newPathBookAbs)
             else:
                 print(pathBook)
                 linkPhoto = pathBook
                 pathBookAbs = join(app.config["UPLOAD_FOLDER"],"users",pathBook)
                 #effettua una conversione in JPEG e poi lo salva
-                img.convert('RGB').save(pathBookAbs,"JPEG")
+                #img.convert('RGB').save(pathBookAbs,"JPEG")
+		img.save(pathBookAbs)
                 print(pathBookAbs)
         try:
             linkPhotoUser = linkPhoto
@@ -521,13 +523,15 @@ def insertBook():
                 #creeremo il nuovo percorso finale completo
                 newPathBookAbs = join(app.config["UPLOAD_FOLDER"],"books",newPathBook)
                 #effettueremo una conversione e salveremo in formato jpeg
-                img.convert('RGB').save(newPathBookAbs,"JPEG")
+                #img.convert('RGB').save(newPathBookAbs,"JPEG")
+		img.save(newPathBookAbs)
                 print(newPathBookAbs)
             else:
                 print(pathBook)
                 linkPhoto = pathBook
                 pathBookAbs = join(app.config["UPLOAD_FOLDER"],"books",pathBook)
-                img.convert('RGB').save(pathBookAbs, "JPEG")
+                #img.convert('RGB').save(pathBookAbs, "JPEG")
+		img.save(pathBookAbs)
                 print(pathBookAbs)
         linkPhotoUser = session["linkPhotoUser"]
         email = session["email"]
