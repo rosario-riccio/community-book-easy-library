@@ -8,7 +8,7 @@ class Config(object):
 
 class ProductionConfig(Config):
    DEBUG=True
-   SERVER_NAME = 'localhost:8000'
+   #SERVER_NAME = 'localhost:8000'
    MAX_CONTENT_PATH=16*1024*1024
    MAIL_SERVER =os.environ['MAIL_SERVER']
    MAIL_PORT = 587
