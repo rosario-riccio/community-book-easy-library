@@ -1,0 +1,15 @@
+Caro {{session['username']}},
+hai effettuato con successo una prenotazione del libro:
+
+titolo:{{title}},
+idBook:{{idBook}},
+
+Contenuto del messaggio:
+{{comment}}
+
+Destinatario della prenotazione:
+
+email: {{emailRecipient}}
+
+La ringrazio,
+lo Staff.

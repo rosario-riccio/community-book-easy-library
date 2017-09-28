@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--libreria.html rappresenta la HOME dell'applicazione web-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>easyLibrary</title>
+    <!-- Bootstrap -->
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/myStyle.css')}}"/>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="background-color:#EEE">
+
+    <div id="backgroundHeader" style="background-color:#5bc0de">
+          <header>
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+              <div class="container">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavBar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a href="{{url_for('libreria')}}" class="navbar-brand"><i class="fa fa-book ff" aria-hidden="true"></i> EasyLibrary</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavBar">
+                  <ul class="nav navbar-nav">
+                    <li><a class="nolink1" href="#">{{session['username']}}</span></a></li>
+                    <li><a class="nolink1" href="#">BKcoin <span class="badge">{{session['bkcoin']}}</span></a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                      <li><a href="{{url_for('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                      <li class="active"><a href="{{url_for('libreria')}}">Home</a></li>
+                        <li><a href="{{url_for('ricerca')}}">Ricerca</a></li>
+                      <li><a href="{{url_for('scaffale')}}">Scaffale</a></li>
+                      <li><a href="{{url_for('messaggi')}}">Messaggi <span class="badge">{{session['messagesCount']}}</span></a></li>
+                  </ul>
+                </div>
+              </div><!--container-->
+            </nav>
+          </header>
+    </div>
+    <!--search bar-->
+    <section>
+      <div class="container" style="height:50px;margin-top:80px;"></div>
+    </section>
+    <!--End search bar-->
+    <section>
+        <div style="min-height:200px" id="books" class="container">
+      </div><!--books end-->
+    </section>-
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4>Richiesta prenotazione</h4>
+                      </div>
+                      <div class="modal-body">
+                          <form id="formModal" role="role" action="javascript:">
+                                <div class="form-group">
+                                        <label class="control-label" for="usernameMessage1">Destinatario</label>
+                                        <input type="text" class="form-control" id="usernameMessage1" name="usernameMessage1" disabled>
+                                </div>
+                                <div class="form-group">
+                                        <label class="control-label" for="titleMessage1">Titolo</label>
+                                        <input type="text" class="form-control" id="titleMessage1" name="titleMessage1" disabled>
+                                </div>
+                                <div class="form-group">
+                                        <input type="hidden" class="form-control" id="idBook1" name="idBook1" disabled>
+                                </div>
+                                <div class="form-group">
+                                        <label class="control-label" for="booking1">Scrivi un messaggio all'utente</label>
+                                        <textarea row="3" class="form-control" id="message1" name="message1" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                      <button type="submit" class="btn btn-default">Invia</button>
+                                </div>
+                            </form>
+                      </div>
+              </div>
+      </div>
+    </div>
+    <div id="myModalSuccess" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4>Richiesta prenotazione</h4>
+                      </div>
+                      <div class="modal-body">
+                          <h5 style="font-weight:300;color:#AAA">Messaggio inviato con successo!</h5>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+              </div>
+
+      </div>
+    </div>
+    <div id="myModalFailure" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+              <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4>Richiesta prenotazione</h4>
+                      </div>
+                      <div class="modal-body">
+                          <h5 style="font-weight:300;color:#AAA">Invio messaggio fallito!</h5>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+              </div>
+      </div>
+    </div>
+    <section id="thirdContainer">
+    </section>
+    <footer>
+      <div class="container" id="myFooter">
+          <h3 style="font-weight:600">EASY LIBRARY<h3>
+            <address style="font-size:15px;font-weight:300">
+                Written by <a href="mailto:webmaster@example.com">Rosario Riccio</a>.<br>
+                Visit us at:<br>
+                Example.com<br>
+              </address>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{url_for('static',filename='js/jquery-3.2.1.min.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <!--My Script-->
+    <script src="{{url_for('static',filename='js/myFunction.js')}}"></script>
+    <script>
+    /*sendPosition consente l'invio della propria posizione mediante una richiesta AJAX*/
+    function sendPosition(lat2,lon2){
+            $.ajax({
+              url:"{{url_for('sendPosition')}}",
+              method:"POST",
+              data:{"lat":lat2,"lon":lon2},
+              dataType:"json",
+              success:function(data){console.log(data.result)}
+            });
+        }
+    /*updatePosition aggiorna la propria posizione*/
+    function updatePosition(position){
+            var lat2 = position.coords.latitude;
+            var lon2 = position.coords.longitude;
+            console.log("Update {{session['username']}}: "+lat2+" "+lon2);
+            sendPosition(lat2,lon2);
+        }
+    /*initUpdatePosition sfruttera' la libreria API HTML 5 per la geolocalizzazione*/
+    function initUpdatePosition(){
+          navigator.geolocation.getCurrentPosition(updatePosition);
+    }
+
+    /*chiedera' al browser se sia possibile utilizzare la geolocalizzazione*/
+    if(navigator.geolocation){
+        initUpdatePosition();
+        setInterval(initUpdatePosition,600000);
+    }else{
+        console.log("geolocalizzazione non abilitata");
+    }
+    </script>
+    <script>
+    /*createBookView creera' dinamicamente un nuovo post da aggiungere alla HOME*/
+           function createBookView(id,username,title,author,publisher,comment,dateInsert,booking,linkPhoto,linkPhotoUser){
+             //utilizzo dei dataset HTML
+                var htmlContent='<div data-idbook="'+id+'" data-title="'+title+'" data-username="'+username+'" style="margin-bottom:20px;" class="oneBook row">'+
+                                            '<div style="min-height:250px;" class="col-md-6 col-md-offset-3">'+
+                                                    '<div style="background-color:#FFF">'+
+                                                                  '<div style="height:auto;color:white" class="headerBook">'+
+                                                                    '<div style="background-color:#5BC0AC;padding:5px;" class="media">'+
+                                                                        '<div class="media-left media-middle">'+
+                                                                            '<img src="'+linkPhotoUser+'" class="img-circle  media-object" style="width:45px;"/>'+
+                                                                        '</div>'+
+                                                                        '<div style="vertical-align:middle;" class="media-body">'+
+                                                                            '<h6 style="font-weight:300;" class="media-heading">'+username+' <small><i></h6>'+
+                                                                            '<h6 style="font-weight:300;" class="media-heading"><small style="font-size: 9px;"><i>  Pubblicato '+dateInsert+'</i></small></h6>'+
+                                                                        '</div>'+
+                                                                    '</div>'+
+                                                                  '</div>'+
+                                                                  '<div class="box" style="background-color:#F7F7F9;padding: 0px 15px;padding-top:8px;">'+
+                                                                          '<div style="min-height:80px;text-overflow:ellipsis;" class="commentBook">'+
+                                                                                '<h4 style="font-weight:500;color:black ">'+title+'</h4>'+
+                                                                                '<h6 style="font-weight:300;color:#CCC">'+author+'</h6>'+
+                                                                                '<h6 style="font-weight:300;color:#CCC">'+publisher+'</h6>'+
+                                                                                '<h6 style="font-weight:300;color:#CCC">Prenotato: '+booking+'</h6>'+
+                                                                                '<hr>'+
+                                                                                '<p style="font-size:14px;font-weight:500">'+comment+'</p>'+
+                                                                                '<hr>'+
+                                                                                '<div class="photoBook">'+
+                                                                                  '<img width="100" height="100" class="img-responsive img-thumbnail" src="'+linkPhoto+'"/>'+
+                                                                                '</div>'+
+                                                                          '</div>'+
+                                                                          '<div style="height:50px;" class="footerBook ">';
+                                                                                    //se il proprietario coincide con l'utente di sessione oppure il non ha monete oppure il libro e' prenotato, allora non sara' possibile effettuare prenotazioni
+                                                                                    if(username=="{{session['username']}}"|| booking==true){htmlContent+='<button style="border-radius:0px;" type="button" class="bookingBT1 btn btn-info pull-right disabled">Prenota <span class="glyphicon glyphicon-send"></span></button>';}
+                                                                                    else{
+                                                                                      htmlContent+='<button style="border-radius:0px;" type="button" class="bookingBT btn btn-info pull-right">Prenota <span class="glyphicon glyphicon-send"></span></button>';
+                                                                                    }
+                                                                        htmlContent+='</div>'+
+                                                                  '</div>'+
+                                                        '</div>'+
+                                            '</div>'+
+                                '</div>';
+                    $("div#books").append(htmlContent);
+                    var book = $("div#books").children().last();
+                    var buttonBook = book.find("button.bookingBT");
+                    var nameClass = book.attr("class");
+                    console.log(nameClass);
+                    //aggiungera' un evento al bottone "prenota":
+                    //sara' avviato il widget bootstrap modal per inviare un messaggio al proprietario
+                    //per una richiesta di prenotazione del libro
+                    buttonBook.click({book1:book},function(event,book){
+                          var book2 = event.data.book1;
+                          var idBook = book2.attr("data-idbook");
+                          var title = book2.data("title");
+                          var username = book2.data("username");
+                          console.log("book selezionato = "+idBook);
+                          $("#titleMessage1").val(title);
+                          $("#usernameMessage1").val(username);
+                          $("#idBook1").val(idBook);
+                          $("#myModal").modal("show");
+                    });
+           }
+
+           /*Valutara' la risposta ottenuta da una richiesta AJAX effettuata dalla funzione getBooks();
+             per ogni libro eventualmente individuato lancera' createBookView() per l'inserimento dinamico di un
+             elemento nel DOM
+           */
+           function resultSearch(data){
+                    console.log(data);
+                    console.log(data[Object.keys(data)[0]]);
+                    if(data[Object.keys(data)[0]]==false){
+                      $("div#books").empty();
+                      $("div#books").html("<h3 class='text-center' style='color:#CCC;font-weight:300'>Nessun risultato!</h3>");
+                      return 1;
+                    }
+                    console.log(typeof data);
+                    $("div#books").empty();
+                    for(var key in data){
+                         console.log("key = "+key);
+                         console.log(typeof key)
+                         if(!data.hasOwnProperty(key)) continue;
+                            var id = data[key]._id;
+                            var username = data[key].username;
+                            var title = data[key].title;
+                            var author = data[key].author;
+                            var publisher = data[key].publisher;
+                            var comment = data[key].comment;
+                            var dateInsert = data[key].dateInsert;
+                            var booking = data[key].booking;
+                            var linkPhoto = "static/img/books/"+data[key].linkPhoto;
+                            console.log(linkPhoto);
+                            var linkPhotoUser = "static/img/users/"+data[key].linkPhotoUser;
+                            console.log(linkPhotoUser);
+                            //creazione dinamica di un elemento libro
+                            createBookView(id,username,title,author,publisher,comment,dateInsert,booking,linkPhoto,linkPhotoUser);
+                    }
+            }
+
+            //getBooks() effettuera' una richiesta AJAX per richiedere tutti i post memorizzati nel DB
+            function getBooks(){
+                $.ajax({
+                  url:"{{url_for("getAllBooks")}}",
+                  method:"POST",
+                  dataType:"json",
+                  success:resultSearch
+                });
+            }
+
+            //resultBooking attivera' uno specifico modal (bootstrap) in base alla risposta di prenotazione di un libro
+            function resultBooking(data){
+              if(data[Object.keys(data)[0]]==false){
+                $("#myModalFailure").modal("show");
+              }else{
+                $("#myModalSuccess").modal("show");
+              }
+            }
+
+            $(document).ready(function(){
+                //avviera' una richiesta AJAX per richiedere la prenotazione del libro
+                //dopo aver cliccato il bottone "prenota" del form con id = formModal
+                $("#formModal").submit(function(){
+                  var username = $("#usernameMessage1").val();
+                  var title = $("#titleMessage1").val();
+                  var id = $("#idBook1").val();
+                  var message1 = $("#message1").val();
+                  var messageTp = true;
+                  console.log(message1);
+                  //richiesta di prenotazione
+                  $.ajax({
+                    url:"{{url_for("getBooking")}}",
+                    method:"POST",
+                    data:{"id":id,"username":username,"message1":message1,"title":title,"messageTp":messageTp},
+                    dataType:"json",
+                    success:resultBooking
+                  });
+                  $("#formModal")[0].reset();
+                  $("#myModal").modal("hide");
+                });
+                //Visualizzera' tutti gli eventuali post pubblicati
+                getBooks();
+            });
+    </script>
+  </body>
+</html>

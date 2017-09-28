@@ -1,0 +1,5 @@
+mongoimport --db easyLibraryDB --collection userCollection --file '/home/rosario/PycharmProjects/easyLibrary/static/db/users.json'
+
+mongoimport --db easyLibraryDB --collection booksCollection --file '/home/rosario/PycharmProjects/easyLibrary/static/db/books.json' 
+
+

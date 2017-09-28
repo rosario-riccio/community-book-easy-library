@@ -1,0 +1,15 @@
+Caro {{usernameRecipient}},
+hai ricevuto con successo una prenotazione del libro:
+
+titolo:{{title}},
+idBook:{{idBook}},
+
+Contenuto del messaggio:
+{{comment}}
+
+mittente della prenotazione:
+
+email: {{emailSender}}
+
+La ringrazio,
+lo Staff.

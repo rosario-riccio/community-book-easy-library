@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<!--scaffale.html consente l'inserimento / cancellazione dei libri pubblicati dall'utente della sessione-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>easyLibrary</title>
+    <!-- Bootstrap -->
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/myStyle.css')}}"/>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="background-color:#EEE">
+
+    <div id="backgroundHeader" style="background-color:#5bc0de">
+          <header>
+            <nav class="navbar navbar-inverse navbar-fixed-top">
+              <div class="container">
+                <div class="navbar-header">
+                  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavBar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a href="{{url_for('libreria')}}" class="navbar-brand"><i class="fa fa-book ff" aria-hidden="true"></i> EasyLibrary</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavBar">
+                  <ul class="nav navbar-nav">
+                    <li><a class="nolink1" href="#">{{session['username']}}</span></a></li>
+                    <li><a class="nolink1" href="#">BKcoin <span class="badge">{{session['bkcoin']}}</span></a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                      <li><a href="{{url_for('logout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                      <li><a href="{{url_for('libreria')}}">Home</a></li>
+                      <li><a href="{{url_for('ricerca')}}">Ricerca</a></li>
+                      <li class="active"><a href="{{url_for('scaffale')}}">Scaffale</a></li>
+                      <li><a href="{{url_for('messaggi')}}">Messaggi <span class="badge">{{session['messagesCount']}}</span></a></li>
+                  </ul>
+                </div>
+              </div><!--container-->
+            </nav>
+          </header>
+    </div>
+
+    <section id="insertBookSection">
+        <div style="padding-top: 100px;" class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <div id="errorValidation"></div>
+                  <div class="panel-group">
+                    <div class="panel panel-success">
+                      <div class="panel-heading">
+                        <h2 style="font-weight:300" class="panel-title">
+                          <a data-toggle="collapse" href="#collapse1">Aggiungi libri...</a>
+                        </h2>
+                      </div>
+                      <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          <form id="insertBook" name="insertBook" method="POST" action="javascript:" enctype=”multipart/form-data”>
+                                  <div class="form-group">
+                                    <label for="title1"><small style="color:#CCC;"> ( max 200 caratteri )</small></label>
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Titolo..." required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="author1"><small style="color:#CCC;"> ( max 200 caratteri )</small></label>
+                                    <input type="text" class="form-control" id="author" name="author" placeholder="Autore..." required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="publisher1"><small style="color:#CCC;"> ( max 200 caratteri )</small></label>
+                                    <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Casa Editrice..." required>
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="ISBN2"><small style="color:#CCC;"> ( 13 caratteri ) </small></label>
+                                     <input type="text" class="form-control" id="isbn1" name="isbn1" placeholder="ISBN..." required>
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="sendISBN1">Invia foto ISBN</label>
+                                    <input type="file" class="form-control" id="isbnImageBook" name="isbnImageBook" accept="image/*" onchange="previewISBN();">
+                                    <small id="previewImageISBN" style="font-weight:300"></small>
+                                  </div>
+                                  <div class="form-group">
+                                     <label for="sendCover1">Invia foto copertina<small style="color:#CCC;"> ( Max 16MB, min 300x400 ) </small></label>
+                                    <input type="file" class="form-control" id="coverBook" name="coverBook" accept="image/*" onchange="previewCover();" required>
+                                    <img id="previewImageCover" height="100" src="" />
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="comment1"><small style="color:#CCC;"> ( max 5000 caratteri )</small></label>
+                                    <textarea class="form-control" rows="5" id="comment" name="comment" placeholder="Riflessioni..."></textarea>
+                                  </div>
+                                  <button type="submit" class="btn btn-info pull-right">Invia <span class="glyphicon glyphicon-send"></span></button>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="mybooks">
+      <div style="min-height:200px;margin-top:50px;" id="books" class="container">
+      </div><!--book end-->
+    </section>
+    <section id="thirdContainer">
+    </section>
+    <footer>
+      <div class="container" id="myFooter">
+          <h3 style="font-weight:600">EASY LIBRARY<h3>
+            <address style="font-size:15px;font-weight:300">
+                Written by <a href="mailto:webmaster@example.com">Rosario Riccio</a>.<br>
+                Visit us at:<br>
+                Example.com<br>
+              </address>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{url_for('static',filename='js/jquery-3.2.1.min.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/quagga.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <script>
+    /*sendPosition consente l'invio della propria posizione mediante una richiesta AJAX*/
+    function sendPosition(lat2,lon2){
+            $.ajax({
+              url:"{{url_for('sendPosition')}}",
+              method:"POST",
+              data:{"lat":lat2,"lon":lon2},
+              dataType:"json",
+              success:function(data){console.log(data.result)}
+            });
+        }
+    /*updatePosition aggiorna la propria posizione*/
+    function updatePosition(position){
+            var lat2 = position.coords.latitude;
+            var lon2 = position.coords.longitude;
+            console.log("Update {{session['username']}}: "+lat2+" "+lon2);
+            sendPosition(lat2,lon2);
+        }
+    /*initUpdatePosition sfruttera' la libreria API HTML 5 per la geolocalizzazione*/
+    function initUpdatePosition(){
+          navigator.geolocation.getCurrentPosition(updatePosition);
+    }
+
+    /*chiedera' al browser se sia possibile utilizzare la geolocalizzazione*/
+    if(navigator.geolocation){
+        initUpdatePosition();
+        setInterval(initUpdatePosition,600000);
+    }else{
+        console.log("geolocalizzazione non abilitata");
+    }
+    </script>
+    <script>
+    var book2;
+    //deleteBookFailure mostra un widget bootstrap alert che indichera' che non sia possibile cancellare la prenotazione
+    function deleteBookFailure(){
+       var errorContent='<div class="alert alert-danger alert-dismissible fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>';
+       var errorValidation = document.getElementById("errorValidation");
+       errorContent+='</strong>Cancellazione bloccata; Prenotazione in corso!!!'+'</div>';
+       errorValidation.innerHTML=errorContent;
+    }
+    //createBookView crea dinamicamente un elemento book per ogni libro pubblicato dall'utente della sessione
+           function createBookView(id,username,title,author,publisher,comment,dateInsert,booking,linkPhoto,isbn){
+                    var htmlContent='<div data-idbook="'+id+'" class="oneBook">'+'<div class="row one">'+
+                                '<div class="col-md-6 col-md-offset-2">'+
+                                      '<div class="media ">'+
+                                            '<div class="media-left">'+
+                                                '<img class="media-object img-responsive img-thumbnail" height="100" width="100" src="'+linkPhoto+'"/>'+
+                                            '</div>'+
+                                            '<div class="media-body">'+
+                                                '<h4 class="media-heading">'+title+'</h4>'+
+                                                '<h6 style="font-weight:300">Autore: '+author+'</h6>'+
+                                                '<h6 style="font-weight:300">Edizione: '+publisher+'</h6>'+
+                                                '<h6 class="bookingComponent" style="font-weight:300">Prenotato: '+booking+'</h6>'+
+                                                '<h6 style="font-size:10px;font-weight:300"><i> Pubblicato il '+dateInsert+'</i></h6>'+
+                                                '<h6 style="font-size:10px;font-weight:300"><i> ISBN: '+isbn+'</i></h6>'+
+                                                '<h6 style="font-size:10px;font-weight:300"><i> idBook: '+id+'</i></h6>'+
+                                            '</div>'+
+                                     '</div>'+
+                                '</div>'+
+                                '<div class="col-md-2">';
+                                    if(booking==true){
+                                     htmlContent+='<button data-element="'+id+'" type="button" class="returnBook btn btn-warning btn-md btn-block">Restituito</button>';
+                                     htmlContent+='<button data-element="'+id+'" type="button" class="deleteBook btn btn-danger btn-md btn-block disabled">Cancella!</button>';
+                                   }else{
+                                     htmlContent+='<button data-element="'+id+'" type="button" class="returnBook btn btn-warning btn-md btn-block  disabled">Restituito</button>';
+                                     htmlContent+='<button data-element="'+id+'" type="button" class="deleteBook btn btn-danger btn-md btn-block">Cancella!</button>';
+                                   }
+                  htmlContent+='</div>'+
+                            '</div>'+
+                          '<div class="row separatore">'+
+                              '<div class="separatore col-md-8 col-md-offset-2">'+
+                                  '<hr>'+
+                              '</div>'+
+                          '</div>'+
+                       '</div><!--one book-->';
+                    $("div#books").append(htmlContent);
+                    //individueremo il div contenitore di libri;
+                    //selezioneremo l'ultimo suo figlio;
+                    //selezioneremo i 2 suoi bottoni "cancella" e "restituito" aggiungendo ad essi un
+                    //gestore all'evento "click"
+                    var book = $("div#books").children().last();
+                    var buttonBook = book.find("button.deleteBook");
+                    var buttonBook2 = book.find("button.returnBook");
+                    var bookingComponent = book.find("h6.bookingComponent")
+                    var nameClass = book.attr("class");
+                    console.log(nameClass);
+                    //sara' aggiunto un evento al bottone "cancella":
+                    //sara' inviata una richiesta AJAX di cancellazione di un libro
+                    buttonBook.click({book1:book},function(event,book){
+                      var x = $(this).attr("data-element");
+                      book2 = event.data.book1;
+                      var id = book2.attr("data-idbook");
+                      console.log("book eliminato = "+id);
+                      //richiesta AJAX di eliminazione libro
+                      $.ajax({
+                        url:"{{url_for("deleteBook")}}",
+                        method:"POST",
+                        dataType:"json",
+                        data:{"id":id},
+                        success:function(data){
+                                  console.log(data);
+                                  if(data[Object.keys(data)[0]]==false){
+                                     //se l'esito fosse negativo verrebbe visualizzato un alarm bootstrap insuccesso
+                                     deleteBookFailure();
+                                  }else{
+                                    console.log("id = "+book2.attr("data-idbook"));
+                                    //effetto grafico JQUERY
+                                    book2.slideUp(1500,function(){
+                                        //rimozione elemento
+                                        $(this).remove();
+                                    });
+                                  }
+                                }
+                      });
+                    });
+                    //aggiungera' un evento al bottone "restituito":
+                    //sara' inviata una richiesta AJAX per informare il DB
+                    //che il libro sia stato restituito
+                    buttonBook2.click({book1:book},function(event,book){
+                      var book2 = event.data.book1;
+                      var id = book2.attr("data-idbook");
+                      console.log("book restituito = "+id);
+                      //richiesta AJAX di reinserimento del libro
+                      $.ajax({
+                        url:"{{url_for("returnBook")}}",
+                        method:"POST",
+                        data:{"id":id},
+                        dataType:"json",
+                        success:function(data){console.log(data)}
+                      });
+                      //il bottone "restituito" e' disabilitato, mentre quello "cancella" e' abilitato
+                      buttonBook2.addClass("disabled");
+                      buttonBook.removeClass("disabled");
+                      bookingComponent.html("Prenotato: False");
+                    });
+           }
+          //resultInsertBookFailure inserisce il widget bootstrap alert che indichera' che l'inserimento del libro sia fallito
+          function resultInsertBookFailure(){
+              var errorContent='<div class="alert alert-danger alert-dismissible fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>';
+              var errorValidation = document.getElementById("errorValidation");
+              errorContent+='</strong> Inserimento libro fallito!'+'</div>';
+              errorValidation.innerHTML=errorContent;
+           }
+           //resultInsertBookFailure inserisce il widget bootstrap alert che indichera' che l'inserimento del libro sia avvenuto con successo
+           function resultInsertBookSuccess(){
+              var errorContent='<div class="alert alert-success alert-dismissible fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>';
+              var errorValidation = document.getElementById("errorValidation");
+              errorContent+='</strong> Inserimento libro avvenuto con successo!'+'</div>';
+              errorValidation.innerHTML=errorContent;
+           }
+           //insertBook analizza il risultato della richiesta AJAX,
+           //in base al relativo valore attiva una specifica funzione;
+           //e' il risultato dell'inserimento di un nuovo libro
+           function insertBook(data){
+                console.log("xhr insertBook");
+                console.log("il risultato e' "+data[Object.keys(data)[0]]);
+                console.log(data[Object.keys(data)[0]]);
+                var result = data[Object.keys(data)[0]];
+                console.log(result);
+                if(result == true){
+                  //se l'esito fosse positivo verrebbe visualizzato un alarm bootstrap di successo
+                  resultInsertBookSuccess();
+                  //richiesta AJAX di tutti i libri
+                  getListBooks();
+                }else{
+                  //se l'esito fosse negativo verrebbe visualizzato un alarm bootstrap di insuccesso
+                  resultInsertBookFailure();
+                }
+           }
+
+          //manageListBooks analizza il risultato della richiesta AJAX effettuata
+          //mediante la funzione getListBooks; per ogni eventuale libro catturato
+          //lo visualizzera' utilizzando createBookView
+          function manageListBooks(data){
+              console.log("xhr list book")
+              $("div#books").empty();
+              for (var key in data){
+                  if(!data.hasOwnProperty(key)) continue;
+                    var id = data[key]._id;
+                    var username = data[key].username;
+                    var title = data[key].title;
+                    var author = data[key].author;
+                    var publisher = data[key].publisher;
+                    var comment = data[key].comment;
+                    var dateInsert = data[key].dateInsert
+                    var booking = data[key].booking;
+                    var isbn = data[key].isbn;
+                    var linkPhoto = "static/img/books/"+data[key].linkPhoto;
+                    console.log(linkPhoto);
+                    createBookView(id,username,title,author,publisher,comment,dateInsert,booking,linkPhoto,isbn);
+              }
+          }
+           //getListBooks effettua una richiesta AJAX della propria lista di libri pubblicati
+           function getListBooks(){
+                var email="{{session['email']}}";
+                $.ajax({
+                    url:"{{url_for("listBook")}}",
+                    method:"POST",
+                    data:{"email":email},
+                    dataType:"json",
+                    success:manageListBooks
+                });
+           }
+
+           //insertDataBook analizza il risultato della richiesta AJAX effettuata
+           //nel metodo previewISBN;
+           //se il libro e' stato individuato dalla RESTful Web Service ,
+           //fornendo l'isbn, allora inserira' i relativi valori nel
+           //form di registrazione del libro.
+           function insertDataBook(result){
+              console.log(result);
+               var title = result.Title;
+               var author = result.Authors;
+               var publisher = result.Publisher;
+               console.log("file json "+title);
+               console.log("file json "+author);
+               console.log("file json "+publisher);
+               $("#title").val(title);
+               $("#author").val(author);
+               $("#publisher").val(publisher);
+           }
+           //attiva la funzione della libreria QuaggaJS
+           //che analizzera' una foto e identifichera' l'isbn in base all'immagine del codice a barre;
+           //per consentire l'analisi della foto lato client utilizzeremo l'oggetto FileReader
+            function previewISBN(){
+                var isbnImageBook = document.getElementById("isbnImageBook").files[0];
+                var isbn1 = document.getElementById("isbn1");
+                //FileReader ci consentira' di leggere lato client un file
+                var reader = new FileReader();
+                reader.onload=function(data){
+                    //analisi dell'immagine
+                    //utilizzando il lettore di tipo EAN adatto per l'ISBN
+                    Quagga.decodeSingle({
+                            decoder :{
+                              readers : ["ean_reader"]
+                            },
+                            halfSample:true,
+                            locate:true,
+                            src:reader.result
+                        },function(data){
+                            if(data.codeResult){
+                                var isbn=data.codeResult.code;
+                                isbn1.value=isbn;//inseriremo l'isbn nell'elemento
+                                //richiesta AJAX dell'isbn
+                                $.ajax({
+                                  url:"{{url_for('requestISBN')}}",
+                                  method:"POST",
+                                  data:{"isbn":isbn},
+                                  dataType:"json",
+                                  success:insertDataBook
+                                });
+                            }else{
+                                preview.innerHTML="errore lettura";
+                            }
+                         }
+                      );
+                };
+                if(isbnImageBook){
+                  //consente di leggere lato client la foto caricata;
+                  //servira' alla libreria QuaggaJS
+                  reader.readAsDataURL(isbnImageBook);
+                }
+            }
+            //previewCover consentira' la visualizzazione in anteprima lato client
+            //della foto caricata nel form mediante l'oggetto FileReader
+            function previewCover(){
+                var coverBook = document.getElementById("coverBook").files[0];
+                var preview = document.getElementById("previewImageCover");
+                var reader = new FileReader();
+                reader.onload=function(data){
+                    preview.src=reader.result;
+
+                };
+                if(coverBook){
+                  reader.readAsDataURL(coverBook);
+                }
+            }
+
+            $(document).ready(function(){
+                getListBooks();
+                //analizzera' i dati e se sono validi effettuera' una
+                //richiesta mediante AJAX
+                $("form#insertBook").submit(function(){
+                    var title = document.getElementById("title");
+                    var author = document.getElementById("author");
+                    var publisher = document.getElementById("publisher");
+                    var comment = document.getElementById("comment");
+                    var errorContent='<div class="alert alert-danger alert-dismissible fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>'
+                    var errorValidation = document.getElementById("errorValidation");
+                    var isbn1 = document.getElementById("isbn1")
+                    if(title.value.length > 200 || author.value.length >200 || publisher.value.length >200 || comment.value.length > 5000 || isbn1.value.length!=13){
+                        errorContent+='Errore!</strong> Dati superano limiti...'+'</div>'
+                        errorValidation.innerHTML=errorContent;
+                        console.log("false");
+                        result=false;
+                        return result;
+                    }
+                    var title = $("form input#title").val();
+                    var author = $("form input#author").val();
+                    var publisher = $("form input#publisher").val();
+                    var coverBook = document.getElementById("coverBook").files[0];
+                    var comment = $("form textarea#comment").val();
+                    var isbn1 = $("#isbn1").val()
+                    console.log(isbn1);
+                    //E' necessario creare un oggetto FormData per inviare file mediante AJAX
+                    var formdata = new FormData();
+                    formdata.append("title",title);
+                    formdata.append("author",author);
+                    formdata.append("publisher",publisher);
+                    formdata.append("coverBook",coverBook);
+                    formdata.append("comment",comment);
+                    formdata.append("isbn1",isbn1);
+                    console.log(formdata);
+                    //Richiesta AJAX per l'inserimento di un libro
+                    $.ajax({
+                        url:"{{url_for("insertBook")}}",
+                        method:"POST",
+                        data:formdata,
+                        dataType:"json",
+                        processData:false,
+                        contentType:false,
+                        success:insertBook
+                    });
+                    $(this).trigger("reset");
+                    $("#collapse1").collapse("hide");
+                    $("#previewImageCover").attr("src","");
+                    $("#previewImageISBN").empty();
+                 });
+            });
+    </script>
+  </body>
+</html>

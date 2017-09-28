@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--registrazione.html consente la registrazione di un nuovo utente-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>easyLibrary</title>
+    <!-- Bootstrap -->
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/myStyle.css')}}"/>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:800" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="background-color:#EEE">
+
+    <div id="backgroundHeader" style="background-color:#5bc0de">
+      <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <!--<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#myNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>-->
+              <a href="{{url_for('index')}}" class="navbar-brand"><i class="fa fa-book ff" aria-hidden="true"></i> EasyLibrary</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavBar">
+              <!--<ul class="nav navbar-nav navbar-right">
+                  <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>
+              </ul>-->
+            </div>
+          </div><!--container-->
+        </nav>
+      </header>
+    </div>
+    <div style="min-height:150px;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading colorTheme">Registrazione</div>
+                        <div class="panel-body">
+                                <div id="errorValidation"></div>
+                                <form  id="registration" action="#" method="post" enctype="multipart/form-data">
+                                        <p style="font-weight:300;">Account</p>
+                                        <label for="username1"><small style="color:#CCC;"> ( max 20 caratteri )</small></label>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                              <input type="text" class="form-control" id="username" name="username" placeholder="username">
+                                        </div>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                              <input type="text" class="form-control" id="email" name="email" placeholder="email">
+                                        </div>
+                                        <label for="password11"><small style="color:#CCC;"> ( max 20 caratteri )</small></label>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                              <input type="password" class="form-control" id="password1" name="password1" placeholder="password">
+                                        </div>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                              <input type="password" class="form-control" id="password2" name="password2" placeholder="riscrivi password">
+                                        </div>
+                                        <label for="firstname1"><small style="color:#CCC;"> ( max 50 caratteri )</small></label>
+                                        <p style="font-weight:300;">Dati personali</p>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                              <input type="text" class="form-control" id="firstname" name="firstname" placeholder="nome">
+                                        </div>
+                                        <label for="lastname1"><small style="color:#CCC;"> ( max 50 caratteri )</small></label>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="cognome">
+                                        </div>
+                                        <label for="address1"><small style="color:#CCC;"> ( max 150 caratteri )</small></label>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                                              <input type="text" class="form-control" id="address" name="address" placeholder="indirizzo">
+                                        </div>
+                                        <label for="city1"><small style="color:#CCC;"> ( max 50 caratteri )</small></label>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                                              <input type="text" class="form-control" id="city" name="city" placeholder="citta'">
+                                        </div>
+                                        <div class="input-group form-group">
+                                              <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+                                              <select class="form-control" id="university" name="university">
+                                                  <option value="">Seleziona la tua universita'</option>
+                                                  <option value="parthenope">UniParthenope</option>
+                                                  <option value="federico ii">Federico II</option>
+                                                  <option value="sun">SUN</option>
+                                              </select>
+                                        </div>
+                                        <label for="sendPhotoUser">Invia la tua foto <small style="color:#CCC;"> ( Max 16MB, min 100x100 ) </small></label>
+                                        <input type="file" id="photoUser" name="photoUser" />
+                                        <br>
+                                        <button type="submit" class="btn btn-info btn-block" >Invia <span class="glyphicon glyphicon-send"></span></button>
+                                </form>
+                          </div>
+                      </div>
+                </div>
+          </div>
+    </div>
+    <section id="thirdContainer">
+    </section>
+    <footer>
+      <div class="container" id="myFooter">
+          <h3 style="font-weight:600">EASY LIBRARY<h3>
+            <address style="font-size:15px;font-weight:300">
+                Written by <a href="mailto:webmaster@example.com">Rosario Riccio</a>.<br>
+                Visit us at:<br>
+                Example.com<br>
+              </address>
+      </div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{url_for('static',filename='js/jquery-3.2.1.min.js')}}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+    <script>
+    /*
+      $.validator.setDefaults consentira' di adattare il plugin JQuery validator
+      a Bootstrap
+    */
+    $(document).ready(function(){
+      $.validator.setDefaults({
+                errorElement: "span",
+                errorClass: "help-block",
+                highlight: function (element, errorClass, validClass) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).closest('.form-group').removeClass('has-error');
+                },
+                errorPlacement: function (error, element) {
+                    if (element.parent('.input-group').length || element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+        });
+        /*
+          $("#registration").validate consente la validazione dei campi del form di registrazione
+        */
+        $("#registration").validate({
+            rules:{
+                  username:{
+                      required:true,
+                      maxlength:20,
+                  },
+                  email:{
+                    required:true,
+                    email:true
+                  },
+                  password1:{
+                    required:true,
+                    maxlength:20
+                  },
+                  password2:{
+                    equalTo:"#password1"
+                  },
+                  firstname:{
+                    required:true,
+                    maxlength:30,
+                  },
+                  lastname:{
+                    required:true,
+                    maxlength:30,
+                  },
+                  address:{
+                    required:true,
+                    maxlength:30,
+                  },
+                  city:{
+                    required:true,
+                    maxlength:30,
+                  },
+                  university:{
+                      required:true
+                  },
+                  photoUser:{
+                      required:true
+                  }
+             },
+             messages:{
+               username:{
+                   required:"username obbligatorio",
+                   maxlength:"username massimo 20 caratteri"
+               },
+               email:{
+                 required:"email obbligatoria",
+                 email:"email non valida"
+               },
+               password1:{
+                 required:"password richiesta",
+                 maxlength:"password massimo 20 caratteri"
+               },
+               password2:{
+                 equalTo:"le password non coincidono"
+               },
+               firstname:{
+                 required:"nome obbligatorio",
+                 maxlength:"nome massimo 30 caratteri"
+               },
+               lastname:{
+                 required:"cognome obbligatorio",
+                 maxlength:"cognome massimo 30 caratteri"
+               },
+               address:{
+                 required:"indirizzo obbligatorio",
+                 maxlength:"indirizzo massimo 30 caratteri"
+               },
+               city:{
+                 required:"citta' obbligatorio",
+                 maxlength:"citta' massimo 30 caratteri"
+               },
+               university:{
+                  required:"Selezionare un'universita'"
+               },
+               photoUser:{
+                   required:"inserire foto"
+               }
+             }
+        });
+    });
+    /*failureUserCreatedDB() aggiungera' un widget bootstrap alert per indicarci che la registrazione sia fallita*/
+    function failureUserCreatedDB(){
+        var errorContent='<div class="alert alert-danger alert-dismissible fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>'
+        var errorValidation = document.getElementById("errorValidation");
+        errorContent+='</strong> Registrazione utente fallita!'+'</div>'
+        console.log("Login fallito");
+        errorValidation.innerHTML=errorContent;
+    }
+    </script>
+    {% set errorUserDB %}
+      <script>failureUserCreatedDB();</script>
+    {% endset %}
+    {% if 'registration_in' in session %}
+        {% if session.registration_in == False %}
+            {% do session.pop('registration_in') %}
+            {{errorUserDB}}
+        {% endif %}
+    {% endif %}
+  </body>
+</html>
